@@ -13,6 +13,7 @@ import com.hankey.cursomc.domain.Cidade;
 import com.hankey.cursomc.domain.Cliente;
 import com.hankey.cursomc.domain.Endereco;
 import com.hankey.cursomc.domain.Estado;
+import com.hankey.cursomc.domain.ItemPedido;
 import com.hankey.cursomc.domain.Pagamento;
 import com.hankey.cursomc.domain.PagamentoComBoleto;
 import com.hankey.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.hankey.cursomc.repositories.CidadeRepository;
 import com.hankey.cursomc.repositories.ClienteRepository;
 import com.hankey.cursomc.repositories.EnderecoRepository;
 import com.hankey.cursomc.repositories.EstadoRepository;
+import com.hankey.cursomc.repositories.ItemPedidoRepository;
 import com.hankey.cursomc.repositories.PagamentoRepository;
 import com.hankey.cursomc.repositories.PedidoRepository;
 import com.hankey.cursomc.repositories.ProdutoRepository;
@@ -56,6 +58,9 @@ public class CursomcApplication implements CommandLineRunner{
 	
 	@Autowired
 	PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -128,7 +133,18 @@ public class CursomcApplication implements CommandLineRunner{
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagm1,pagm2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2.000);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
 		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
 	}
 
 }
