@@ -26,7 +26,7 @@ public class CategoriaResource {
 	//ResponseEntity - Tipo especial do Spring que ja encapsula as inf de uma resposta http para rest
 	// ? = qualquer tipo (pode encontrar ou nao)
 	@RequestMapping(value="/{id}",method = RequestMethod.GET)
-	public ResponseEntity<?> listar(@PathVariable Integer id) {
+	public ResponseEntity<Categoria> listar(@PathVariable Integer id) {
 		return ResponseEntity.ok(servico.buscar(id));
 		
 	}
@@ -36,6 +36,13 @@ public class CategoriaResource {
 		obj = servico.inserir(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();		
+	}
+	
+	@RequestMapping(value="/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj,@PathVariable Integer id) {
+		obj.setId(id);
+		obj = servico.update(obj);
+		return ResponseEntity.noContent().build();		
 	}
 	
 	public List<Categoria> listar() {

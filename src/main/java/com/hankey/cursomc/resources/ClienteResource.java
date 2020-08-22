@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hankey.cursomc.domain.Cliente;
 import com.hankey.cursomc.services.ClienteService;
 
 @RestController
@@ -22,7 +23,7 @@ public class ClienteResource {
 	//ResponseEntity - Tipo especial do Spring que ja encapsula as inf de uma resposta http para rest
 	// ? = qualquer tipo (pode encontrar ou nao)
 	@RequestMapping(value="/{id}",method = RequestMethod.GET)
-	public ResponseEntity<?> listar(@PathVariable Integer id) {
+	public ResponseEntity<Cliente> listar(@PathVariable Integer id) {
 		return ResponseEntity.ok(servico.buscar(id));
 		
 	}
