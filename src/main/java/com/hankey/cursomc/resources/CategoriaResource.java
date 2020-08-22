@@ -31,6 +31,11 @@ public class CategoriaResource {
 		
 	}
 	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<Categoria>> listarTodas() {
+		return ResponseEntity.ok().body(servico.buscarTodas());
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> inserir(@RequestBody Categoria obj) {
 		obj = servico.inserir(obj);
