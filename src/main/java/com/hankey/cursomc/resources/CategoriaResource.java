@@ -45,6 +45,12 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();		
 	}
 	
+	@RequestMapping(value="/{id}",method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deletar(@PathVariable Integer id) {
+		servico.deletar(id);
+		return ResponseEntity.noContent().build();			
+	}
+	
 	public List<Categoria> listar() {
 		Categoria cat1 = new Categoria(1,"Informática");
 		Categoria cat2 = new Categoria(2,"Escritório");
