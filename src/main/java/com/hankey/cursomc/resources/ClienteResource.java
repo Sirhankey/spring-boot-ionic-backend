@@ -1,5 +1,6 @@
 package com.hankey.cursomc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.hankey.cursomc.domain.Categoria;
 import com.hankey.cursomc.domain.Cliente;
+import com.hankey.cursomc.dto.CategoriaDTO;
 import com.hankey.cursomc.dto.ClienteDTO;
 import com.hankey.cursomc.services.ClienteService;
 
@@ -35,6 +39,14 @@ public class ClienteResource {
 		List<Cliente> lista = servico.buscarTodas();
 		List<ClienteDTO> listaDTO = lista.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listaDTO);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> inserir(@RequestBody ClienteDTO objDTO) {
+		Cliente obj = servico.fromDTO(objDTO);
+		obj = servico.inserir(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();		
 	}
 	
 	@RequestMapping(value="/page", method = RequestMethod.GET)
