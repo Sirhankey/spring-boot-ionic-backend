@@ -3,6 +3,8 @@ package com.hankey.cursomc.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import com.hankey.cursomc.dto.ClienteDTO;
 import com.hankey.cursomc.dto.ClienteNewDTO;
 import com.hankey.cursomc.repositories.CidadeRepository;
 import com.hankey.cursomc.repositories.ClienteRepository;
+import com.hankey.cursomc.repositories.EnderecoRepository;
 import com.hankey.cursomc.services.exceptions.DataIntegrityException;
 import com.hankey.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -29,6 +32,9 @@ public class ClienteService {
 	
 	@Autowired
 	private CidadeRepository cidadeRepo;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepo;
 	
 	public Cliente buscar(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
@@ -86,8 +92,11 @@ public class ClienteService {
 		newObj.setEmail(obj.getEmail());
 	}
 	
+	@Transactional
 	public Cliente inserir(Cliente obj) {
 		obj.setId(null);
-		return repo.save(obj);
+		repo.save(obj);
+		enderecoRepo.saveAll(obj.getEnderecos());
+		return obj;
 	}
 }
